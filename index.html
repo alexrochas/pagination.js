@@ -7,20 +7,68 @@
         <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
-    <div id="content">
-  <div id="dummy-box" class="block-flat" style="display: none" >
-  </div>
-  <div id="pagination-bar" style="display: none;">
-      <div class="text-center">
-          <ul class="pagination">
-              <li id="pagination-previous" class="prev"><a href="#">&laquo;</a></li>
-              <li id="pagination-next" class="next"><a href="#">&raquo;</a></li>
-          </ul>
+      <div id="content">
+          <div id="dummy-box" class="block-flat" style="display: none" >
+          </div>
+              <div id="pagination-bar" style="display: none;">
+                  <div class="text-center">
+                      <ul class="pagination">
+                          <li id="pagination-previous" class="prev"><a href="#">&laquo;</a></li>
+                          <li id="pagination-next" class="next"><a href="#">&raquo;</a></li>
+                      </ul>
+                  </div>
+              </div>
       </div>
-  </div>
-</div>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'></script>
-    <script src="js/index.js"></script>
+      <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+      <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'></script>
+      <script src="js/index.js"></script>
+      <script>
+        $(document).ready(function() {
+            function dummyCallback(dummies) {
+                $('#dummy-box').empty();
+                for (var i in dummies) {
+                    var dummy = dummies[i];
+                    $('#dummy-box').append(
+                            "<ul>" + dummy + "</ul>"
+                            );
+                }
+            }
+
+            var dummy_data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+            pagination_ = new pagination(dummy_data, dummyCallback, 3);
+            pagination_.actual_page();
+            verifyPaginationBorders();
+
+            $('#dummy-box').show();
+            $('#pagination-bar').show();
+            $('.pagination').children().each(function() {
+                var value = this;
+                if (!$(value).hasClass('prev') && !$(value).hasClass('next')) {
+                    $(value).remove();
+                }
+            });
+            $('#pagination-previous').after(function() {
+                var return_ = "";
+                for (var i = 0; pagination_.size() > i; i++) {
+                    var actual_page = pagination_.actual_page(i);
+                    var page = pagination_.get_page(i);
+                    var interface_index = arrayIndexToInterfaceIndex(i);
+                    if (actual_page == page) {
+                        return_ += "<li class='active page' id='" + i + "'><a href='#'>" + interface_index + "</a></li>";
+                    } else {
+                        return_ += "<li class='page' id='" + i + "'><a href='#'>" + interface_index + "</a></li>";
+                    }
+                }
+
+                if (pagination_.size == 0) {
+                    return_ += "<li><span class=ellipsis>…</span></li>";
+                }
+
+                return return_;
+            }(this));
+
+            pagination_.go_to_page(0);
+        });
+    </script>
   </body>
 </html>
