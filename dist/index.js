@@ -109,13 +109,7 @@
 	    _this.goToPage(1);
 
 	    var template = new _template2.default(_this.nextPage, _this.goToPage, _this.previousPage);
-	    template.render({
-	      'pages': _this.pages,
-	      'currentContent': _this.getPage(_this.page),
-	      'currentPage': _this.page,
-	      'hasNextPage': _this.hasPage(_this.page + 1),
-	      'hasPreviousPage': _this.hasPage(_this.page - 1)
-	    }, element);
+	    template.render(_this.getValues(), element);
 	    return _this;
 	  }
 
@@ -124,6 +118,16 @@
 
 	var _initialiseProps = function _initialiseProps() {
 	  var _this2 = this;
+
+	  this.getValues = function () {
+	    return {
+	      'pages': _this2.pages,
+	      'currentContent': _this2.getPage(_this2.page),
+	      'currentPage': _this2.page,
+	      'hasNextPage': _this2.hasPage(_this2.page + 1),
+	      'hasPreviousPage': _this2.hasPage(_this2.page - 1)
+	    };
+	  };
 
 	  this.setData = function (data) {
 	    var perPage = arguments.length <= 1 || arguments[1] === undefined ? _this2.perPage : arguments[1];
@@ -149,7 +153,7 @@
 	  };
 
 	  this.getPage = function (page) {
-	    if (!_this2.hasPage(page)) throw new RangeError('Page not exist');
+	    if (!_this2.hasPage(page)) return null;
 
 	    return _this2.pages[page];
 	  };
@@ -157,23 +161,17 @@
 	  this.goToPage = function (page) {
 	    var callback = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
 
-	    if (!_this2.hasPage(page)) throw new RangeError('Page not exist');
+	    if (!_this2.hasPage(page)) return null;
 
 	    _this2.page = page;
 
-	    var newValues = {
-	      'pages': _this2.pages,
-	      'currentContent': _this2.getPage(_this2.page),
-	      'currentPage': _this2.page,
-	      'hasNextPage': _this2.hasPage(_this2.page + 1),
-	      'hasPreviousPage': _this2.hasPage(_this2.page - 1)
-	    };
-
-	    _this2.emit('change', newValues);
+	    var values = _this2.getValues();
 
 	    if (callback) {
-	      callback(newValues);
+	      callback(values);
 	    }
+
+	    _this2.emit('change', values);
 
 	    return _this2;
 	  };
@@ -289,34 +287,16 @@
 	    });
 	  };
 
-	  this.renderPreviousPage = function (hasPreviousPage) {
-	    var className = 'pagination__pages__page pagination__pages__page--previous';
+	  this.renderNextAndPrevious = function (enabled, onClick, modifier, content) {
+	    var className = 'pagination__pages__page pagination__pages__page--' + modifier;
 	    var disabled = false;
 
-	    if (!hasPreviousPage) {
+	    if (!enabled) {
 	      className += ' pagination__pages__page--disabled';
 	      disabled = true;
 	    }
 
-	    return _this.renderPage('«', _this.onPreviousPage.bind(_this, _this.update), className, disabled);
-	  };
-
-	  this.renderNextPage = function (hasNextPage) {
-	    var className = 'pagination__pages__page pagination__pages__page--next';
-	    var disabled = false;
-
-	    if (!hasNextPage) {
-	      className += ' pagination__pages__page--disabled';
-	      disabled = true;
-	    }
-
-	    return _this.renderPage('»', _this.onNextPage.bind(_this, _this.update), className, disabled);
-	  };
-
-	  this.renderContent = function (content) {
-	    return (0, _h2.default)('div', {
-	      'className': 'pagination__content'
-	    }, content);
+	    return _this.renderPage(content, onClick, className, disabled);
 	  };
 
 	  this.render = function (_ref, element) {
@@ -333,7 +313,7 @@
 	      'className': 'pagination__content'
 	    }, currentContent), (0, _h2.default)('ul', {
 	      'className': 'pagination__pages'
-	    }, [_this.renderPreviousPage(hasPreviousPage), _this.renderPages(pages, currentPage), _this.renderNextPage(hasNextPage)])]);
+	    }, [_this.renderNextAndPrevious(hasPreviousPage, _this.onPreviousPage.bind(_this, _this.update), 'previous', '«'), _this.renderPages(pages, currentPage), _this.renderNextAndPrevious(hasNextPage, _this.onNextPage.bind(_this, _this.update), 'next', '»')])]);
 
 	    if (element) {
 	      _this.tree = tree;

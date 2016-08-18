@@ -34,34 +34,16 @@ export default class Template {
     });
   };
 
-  renderPreviousPage = (hasPreviousPage) => {
-    let className = 'pagination__pages__page pagination__pages__page--previous';
+  renderNextAndPrevious = (enabled, onClick, modifier, content) => {
+    let className = `pagination__pages__page pagination__pages__page--${modifier}`;
     let disabled = false;
 
-    if(! hasPreviousPage) {
+    if(! enabled) {
       className+= ' pagination__pages__page--disabled';
       disabled = true;
     }
 
-    return this.renderPage('«', this.onPreviousPage.bind(this, this.update), className, disabled);
-  };
-
-  renderNextPage = (hasNextPage) => {
-    let className = 'pagination__pages__page pagination__pages__page--next';
-    let disabled = false;
-
-    if(! hasNextPage) {
-      className+= ' pagination__pages__page--disabled';
-      disabled = true;
-    }
-
-    return this.renderPage('»', this.onNextPage.bind(this, this.update), className, disabled);
-  };
-
-  renderContent = (content) => {
-    return h('div', {
-      'className': 'pagination__content',
-    }, content);
+    return this.renderPage(content, onClick, className, disabled);
   };
 
   render = ({ pages, currentContent, currentPage, hasNextPage, hasPreviousPage }, element) => {
@@ -75,9 +57,9 @@ export default class Template {
       h('ul', {
         'className': 'pagination__pages',
       }, [
-        this.renderPreviousPage(hasPreviousPage),
+        this.renderNextAndPrevious(hasPreviousPage, this.onPreviousPage.bind(this, this.update), 'previous', '«'),
         this.renderPages(pages, currentPage),
-        this.renderNextPage(hasNextPage),
+        this.renderNextAndPrevious(hasNextPage, this.onNextPage.bind(this, this.update), 'next', '»'),
       ])
     ]);
 
