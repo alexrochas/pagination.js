@@ -111,6 +111,7 @@
 	    var template = new _template2.default(_this.nextPage, _this.goToPage, _this.previousPage);
 	    template.render({
 	      'pages': _this.pages,
+	      'currentContent': _this.getPage(_this.page),
 	      'currentPage': _this.page,
 	      'hasNextPage': _this.hasPage(_this.page + 1),
 	      'hasPreviousPage': _this.hasPage(_this.page - 1)
@@ -320,6 +321,7 @@
 
 	  this.render = function (_ref, element) {
 	    var pages = _ref.pages;
+	    var currentContent = _ref.currentContent;
 	    var currentPage = _ref.currentPage;
 	    var hasNextPage = _ref.hasNextPage;
 	    var hasPreviousPage = _ref.hasPreviousPage;
@@ -329,7 +331,7 @@
 	      'className': 'pagination'
 	    }, [(0, _h2.default)('div', {
 	      'className': 'pagination__content'
-	    }, pages[currentPage]), (0, _h2.default)('ul', {
+	    }, currentContent), (0, _h2.default)('ul', {
 	      'className': 'pagination__pages'
 	    }, [_this.renderPreviousPage(hasPreviousPage), _this.renderPages(pages, currentPage), _this.renderNextPage(hasNextPage)])]);
 
@@ -342,13 +344,8 @@
 	    return tree;
 	  };
 
-	  this.update = function (_ref2) {
-	    var pages = _ref2.pages;
-	    var currentPage = _ref2.currentPage;
-	    var hasNextPage = _ref2.hasNextPage;
-	    var hasPreviousPage = _ref2.hasPreviousPage;
-
-	    var newTree = _this.render({ pages: pages, currentPage: currentPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage });
+	  this.update = function (values) {
+	    var newTree = _this.render(values);
 	    var patches = (0, _diff2.default)(_this.tree, newTree);
 	    _this.node = (0, _patch2.default)(_this.node, patches);
 	    _this.tree = newTree;

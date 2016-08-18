@@ -13,6 +13,7 @@ export default class Pagination extends Emitter {
     const template = new Template(this.nextPage, this.goToPage, this.previousPage);
     template.render({
       'pages': this.pages,
+      'currentContent': this.getPage(this.page),
       'currentPage': this.page,
       'hasNextPage': this.hasPage(this.page + 1),
       'hasPreviousPage': this.hasPage(this.page - 1),

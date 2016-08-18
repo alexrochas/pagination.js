@@ -64,14 +64,14 @@ export default class Template {
     }, content);
   };
 
-  render = ({ pages, currentPage, hasNextPage, hasPreviousPage }, element) => {
+  render = ({ pages, currentContent, currentPage, hasNextPage, hasPreviousPage }, element) => {
 
     const tree = h('div', {
       'className': 'pagination',
     }, [
       h('div', {
         'className': 'pagination__content',
-      }, pages[currentPage]),
+      }, currentContent),
       h('ul', {
         'className': 'pagination__pages',
       }, [
@@ -90,8 +90,8 @@ export default class Template {
     return tree;
   };
 
-  update = ({ pages, currentPage, hasNextPage, hasPreviousPage }) => {
-    const newTree = this.render({ pages, currentPage, hasNextPage, hasPreviousPage });
+  update = (values) => {
+    const newTree = this.render(values);
     const patches = diff(this.tree, newTree);
     this.node = patch(this.node, patches);
     this.tree = newTree;
