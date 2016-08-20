@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset='UTF-8'>
+    <title>Pagination Js - Simple</title>
+    <style>
+      *,
+      *:before,
+      *:after {
+        box-sizing: border-box;
+      }
+      body {
+        background: #F0F0F0;
+        margin: 0;
+      }
+      .pagination {
+        float: left;
+        width: 100%;
+        text-align: center;
+      }
+      .pagination__content {
+        float: left;
+        width: 100%;
+        padding: 50px;
+        background: #FFF;
+        border-left: 1px solid #efefef;
+        border-right: 1px solid #efefef;
+        border-bottom: 1px solid #e2e2e2;
+        box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.04);
+        margin-bottom: 50px;
+      }
+      .pagination__pages {
+        display: inline-block;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .pagination__pages__page {
+        display: inline-block;
+        margin-left: -1px;
+      }
+      .pagination__pages__page > button {
+        padding: 5px 10px;
+        color: #7761a7;
+        background: #FFF;
+        border: 1px solid #ddd;
+        cursor: pointer;
+        line-height: 16px;
+        font-size: 16px;
+      }
+      .pagination__pages__page > button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .pagination__pages__page > button:hover {
+        background: rgba(119, 97, 167, 0.5);
+        color: #FFF;
+      }
+      .pagination__pages__page.pagination__pages__page--active > button {
+        color: #FFF;
+        background: #7761a7;
+        opacity: 1;
+        border-color: #7761a7;
+      }
+    </style>
+  </head>
+  <body>
+    <div class='content'>
+    </div>
+    <script src='../../dist/index.js'></script>
+    <script>
+      var element = document.querySelector('.content');
+      var dummyData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+      var pagination = Pagination(element, dummyData, 3);
+
+      pagination.on('change', function() {
+        console.log('change');
+      });
+    </script>
+  </body>
+</html>

@@ -1,4 +1,3 @@
-
 # Created by https://www.gitignore.io/api/webstorm,vim,phpstorm
 
 ### WebStorm ###
@@ -36,6 +35,9 @@
 # IntelliJ
 /out/
 
+# Dependency directories
+node_modules
+
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 
@@ -56,7 +58,6 @@ fabric.properties
 # .idea/misc.xml
 # *.ipr
 
-
 ### Vim ###
 # swap
 [._]*.s[a-w][a-z]
@@ -68,7 +69,6 @@ Session.vim
 *~
 # auto-generated tag files
 tags
-
 
 ### PhpStorm ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
